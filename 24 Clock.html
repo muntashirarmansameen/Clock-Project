@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>24 Hour Clock</title>
+
+    <style>
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #c2e1e3; /* ব্যাকগ্রাউন্ড কালার */
+            font-family: jetbrains mono;
+        }
+
+        .clock {
+            position: relative;
+            width: 755px; /*গড়ির সাইজ বাড়ানের জন্যে*/
+            height: 755px; /*গড়ির সাইজ বাড়ানের জন্যে*/
+            border: 2px solid #2c3e50; /* গড়ির বডার */
+            border-radius: 50%;
+            background: #ffffff; /* গড়ির ভিতরের সাদা কালার */
+        }
+
+        .number {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-weight: 700; /* ফন্টকে চিকন করার জন্যে */
+            font-size: 20px; /* ফন্টের সাইজ */
+        }
+
+        .line {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 2px;
+            height: 378px;
+            background: #2c3e50;
+            transform-origin: bottom center;
+            z-index: 0;
+        }
+
+
+        /* কাঁটাগুলোর স্টাইল */
+        .hand {
+            position: absolute;
+            left: 50%;
+            bottom: 50%;
+            transform-origin: bottom;
+        }
+
+        /* ঘণ্টার কাঁটা ====================================*/
+        .hour {
+            width: 2px;
+            height: 379px; /* ঘন্টার কাঁটার হাইট --------*/
+            background: rgb(0, 0, 255);
+            z-index: 3;
+        }
+
+        /* মিনিটের কাঁটা ===================================*/
+        .min {
+            width: 3px;
+            height: 359px; /* মিনিটের কাঁটার হাইট */
+            background: #a30000;
+            z-index: 2;
+        }
+
+        /* সেকেন্ডের কাঁটা ==================================*/
+        .sec {
+            width: 3px;
+            height: 359px; /* সেকেন্ডের কাঁটার হাইট */
+            background: #a30000;
+            z-index: 1;
+        }
+
+        .dot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 14px;
+            height: 14px;
+            background: #2c3e50;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+
+        /* Red Line ==================================================*/
+        .r1 {
+            transform: translate(-50%, -100%) rotate(210deg);
+        }
+        .r2 {
+            transform: translate(-50%, -100%) rotate(90deg);
+        }
+        .r3 {
+            transform: translate(-50%, -100%) rotate(330deg);
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="clock" id="clock">
+        <div class="line r1"></div>
+        <div class="line r2"></div>
+        <div class="line r3"></div>
+        <div id="h" class="hand hour"></div>
+        <div id="m" class="hand min"></div>
+        <div id="s" class="hand sec"></div>
+        <div class="dot"></div>
+    </div>
+
+    <script>
+        const c = document.getElementById("clock"),
+            R = 390;
+        for (let i = 1; i <= 24; i++) {
+            let a = ((i - 12) * 15 * Math.PI) / 180,
+                x = Math.sin(a) * R,
+                y = -Math.cos(a) * R,
+                d = document.createElement("div");
+            d.className = "number";
+            d.style.left = `calc(50% + ${x}px - 20px)`;
+            d.style.top = `calc(50% + ${y}px - 20px)`;
+            d.textContent = i;
+            c.appendChild(d);
+        }
+        function tick() {
+            let n = new Date(),
+                h = n.getHours(),
+                m = n.getMinutes(),
+                s = n.getSeconds();
+            document.getElementById("h").style.transform = `translateX(-50%) rotate(${h * 15 + m / 4 + 180}deg)`;
+            document.getElementById("m").style.transform = `translateX(-50%) rotate(${m * 6 + s / 10}deg)`;
+            document.getElementById("s").style.transform = `translateX(-50%) rotate(${s * 6}deg)`;
+        }
+
+        tick();
+        setInterval(tick, 1000);
+
+    </script>
+
+</body>
+
+</html>
+
+
